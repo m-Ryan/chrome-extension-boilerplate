@@ -1,0 +1,40 @@
+{
+  "manifest_version": 2,
+  "name": "Chrome插件脚手架",
+  "version": "0.0.1",
+  "description": "Chrome插件脚手架",
+  "author": "m-Ryan",
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+  "background": {
+    "page": "background.html"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "static/js/web.js"
+      ],
+      "css": [],
+      "matches": [
+        "*://*/*"
+      ]
+    }
+  ],
+  "commands": {},
+  "permissions": [
+    "desktopCapture",
+    "activeTab",
+    "tabCapture",
+    "contextMenus", // 右键菜单
+    "tabs", // 标签
+    "notifications", // 通知
+    "webRequest", // web请求
+    "webRequestBlocking", // 阻塞式web请求
+    "storage" // 插件本地存储],
+  ]
+}
