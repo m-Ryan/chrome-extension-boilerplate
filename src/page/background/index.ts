@@ -1,11 +1,18 @@
 import BgPort from '@/utils/BgPort';
+import { services } from '@/utils/service';
+
 chrome.runtime.onInstalled.addListener(onInstalled);
 
-function onInstalled() {
-  console.log('onInstalled');
-}
+async function onInstalled() {
+  BgPort.init();
+  try {
+    const result = await services({
+      url: 'https://www.baidu.com/',
+      method: 'GET',
+    });
 
-BgPort.on('PORT_INITED', (data: any) => {
-  console.log(data);
-  BgPort.port.postMessage(data);
-});
+    console.log('result', result);
+  } catch (error) {
+    console.log('error', error);
+  }
+}

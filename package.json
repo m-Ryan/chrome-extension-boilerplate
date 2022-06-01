@@ -33,10 +33,15 @@
     "@babel/runtime": "^7.12.5",
     "@types/chrome": "^0.0.122",
     "@types/mkdirp": "^1.0.1",
+    "@types/nanoid": "^3.0.0",
+    "@types/qs": "^6.9.7",
     "@types/uuid": "^8.3.0",
+    "axios": "^0.27.2",
     "babel-loader": "^8.1.0",
     "fs": "^0.0.1-security",
     "mkdirp": "^1.0.4",
+    "nanoid": "^3.3.4",
+    "qs": "^6.10.3",
     "typescript": "^3.9.7",
     "uuid": "^8.3.2"
   }

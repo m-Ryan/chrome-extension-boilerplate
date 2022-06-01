@@ -1,7 +1,10 @@
-type ConnectPortEvent = 'PORT_INITED' | 'PORT_DISCONNECT';
+type ConnectPortEvent =
+  | 'REQUEST_PORT_INITED'
+  | 'PORT_INITED'
+  | 'PORT_DISCONNECT'
+  | 'REQUEST_COOKIE'
+  | 'RECEIVE_COOKIE';
 
 type PortEventHandler = {
-  [K in ConnectPortEvent]: {
-    time: string;
-  }
+  [K in ConnectPortEvent]: {};
 };

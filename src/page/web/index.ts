@@ -1,12 +1,15 @@
+import { services } from '@/utils/service';
 import WebPort from '@/utils/WebPort';
 import './index.scss';
 
+async function main() {
+  await WebPort.init();
 
-WebPort.on('PORT_INITED', () => console.log('receive from bgport'));
-
-document.body.onclick = () => {
-  WebPort.emit('PORT_INITED', {
-    time: 'click'
+  WebPort.request('REQUEST_COOKIE', {
+    domain: 'easy-email.myshopify.com',
+  }).then(async ({ data: cookie }) => {
+    console.log('cookie', cookie);
   });
+}
 
-};
+main();

@@ -1,7 +1,14 @@
-type Handler = (event: { type: ConnectPortEvent, data: PortEventHandler[ConnectPortEvent]; }) => void;
+import { nanoid } from 'nanoid';
 
-export class ConnectPort {
-  private handlers: Partial<{ [T in ConnectPortEvent]: Array<Handler> }> = {};
+type Handler = (event: {
+  type: ConnectPortEvent;
+  data: PortEventHandler[ConnectPortEvent];
+}) => void;
+
+export abstract class ConnectPort {
+  private handlers: Partial<{
+    [T in ConnectPortEvent]: Array<[Handler]>;
+  }> = {};
   public port: chrome.runtime.Port;
 
   constructor(isWeb: boolean) {
@@ -11,7 +18,7 @@ export class ConnectPort {
         this.callHandler(data);
       });
     } else {
-      chrome.runtime.onConnect.addListener(port => {
+      chrome.runtime.onConnect.addListener((port) => {
         port.onMessage.addListener((data) => {
           this.port = port;
           this.callHandler(data);
@@ -20,18 +27,23 @@ export class ConnectPort {
     }
   }
 
-  private callHandler = (event: { type: ConnectPortEvent, data: PortEventHandler[ConnectPortEvent]; }) => {
-    this.handlers[event.type]?.forEach((fn) => fn(event));
+  private callHandler = (event: Parameters<Handler>[0]) => {
+    this.handlers[event.type]?.forEach(([fn]) => {
+      fn(event);
+    });
   };
 
   public on(event: ConnectPortEvent, fn: Handler) {
     if (!this.handlers[event]) {
       this.handlers[event] = [];
     }
-    this.handlers[event]!.push(fn);
+    this.handlers[event]!.push([fn]);
   }
 
-  public emit(event: ConnectPortEvent, data: PortEventHandler[ConnectPortEvent]) {
+  public emit(
+    event: ConnectPortEvent,
+    data: PortEventHandler[ConnectPortEvent]
+  ) {
     if (!this.port) {
       requestAnimationFrame(() => {
         this.emit(event, data);
@@ -39,14 +51,30 @@ export class ConnectPort {
     } else {
       this.port.postMessage({
         type: event,
-        data
+        data: data,
       });
     }
-
   }
 
-  public off(event: string) {
-    delete this.handlers[event];
+  public off(event: string, fn: Handler) {
+    if (!this.handlers[event]) return;
+
+    this.handlers[event] = this.handlers[event].filter(
+      (item: Handler) => item !== fn
+    );
   }
 
+  public request<T extends Record<string, any>>(
+    event: ConnectPortEvent,
+    data: T
+  ) {
+    return new Promise<{ event: ConnectPortEvent; data: any }>((resolve) => {
+      const handler = (args: any) => {
+        resolve(args);
+        this.off(event, handler);
+      };
+      this.on(event, handler);
+      this.emit(event, { ...data });
+    });
+  }
 }
