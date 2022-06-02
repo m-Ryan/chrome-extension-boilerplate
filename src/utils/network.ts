@@ -5,7 +5,7 @@ export function CreateNetwork(baseUrl = '', defaultOptions?: RequestInit) {
     get: async <T extends any = any>(
       url: string,
       params: { [key: string]: any } = {}
-    ): Promise<Response<T>> => {
+    ): Promise<T> => {
       return fetch(
         baseUrl + url + qs.stringify(params.params, { addQueryPrefix: true }),
         {
@@ -21,7 +21,7 @@ export function CreateNetwork(baseUrl = '', defaultOptions?: RequestInit) {
       url: string,
       data: any,
       config: { headers: { [key: string]: string } } = { headers: {} }
-    ): Promise<Response<T>> => {
+    ): Promise<T> => {
       return fetch(baseUrl + url, {
         method: 'post',
         body: JSON.stringify(data),

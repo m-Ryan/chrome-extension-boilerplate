@@ -9,8 +9,6 @@ export const services = (config: AxiosRequestConfig<any>) => {
     data: config.data,
     method: config.method,
     headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
       ...config.headers,
     },
   });

@@ -1,4 +1,3 @@
-import { services } from '@/utils/service';
 import WebPort from '@/utils/WebPort';
 import './index.scss';
 
