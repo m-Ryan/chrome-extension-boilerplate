@@ -1,4 +1,5 @@
 import { ConnectPort } from './ConnectPort';
+import { get } from 'lodash';
 
 export default new (class BgPort extends ConnectPort {
   constructor() {
@@ -11,16 +12,24 @@ export default new (class BgPort extends ConnectPort {
     });
 
     this.on(
-      'REQUEST_COOKIE',
+      'REQUEST_FEATURE',
       (event: {
+        uid: string;
         type: ConnectPortEvent;
-        data: PortEventHandler[ConnectPortEvent];
+        data: {
+          name: string;
+          data: any;
+        };
       }) => {
-        chrome.cookies.getAll(event.data, (cookies) => {
-          const cookie = cookies
-            .map((item) => item.name + '=' + item.value)
-            .join('; ');
-          this.emit('REQUEST_COOKIE', cookie);
+
+        console.log('event', event);
+
+        const handler = get(chrome, event.data.name);
+
+        handler(event.data.data, (...args: any) => {
+          console.log(args);
+
+          this.emit('REQUEST_FEATURE', [...args], event.uid);
         });
       }
     );

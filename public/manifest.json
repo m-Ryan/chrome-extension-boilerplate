@@ -19,8 +19,15 @@
       "matches": ["*://*/*"]
     }
   ],
+  "web_accessible_resources": [
+    {
+      "resources": ["static/js/dom.js"],
+      "matches": ["*://*/*"]
+    }
+  ],
   "commands": {},
   "permissions": [
+    "scripting",
     "desktopCapture",
     "activeTab",
     "tabCapture",

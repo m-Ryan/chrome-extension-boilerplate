@@ -9,6 +9,7 @@ export default {
   entry: {
     web: path.resolve(cwd, 'src/page/web/index.ts'),
     background: path.resolve(cwd, 'src/page/background/index.ts'),
+    shopify: path.resolve(cwd, 'src/page/shopify/index.ts'),
   },
   output: {
     path: path.resolve(cwd, 'build'),

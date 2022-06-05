@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { ConnectPort } from './ConnectPort';
 
 export default new (class WebPort extends ConnectPort {
@@ -12,5 +13,20 @@ export default new (class WebPort extends ConnectPort {
         resolve(true);
       })
     );
+  }
+
+  getFeature<T extends Record<string, any>>(
+    event: ConnectPortEvent,
+    data: T
+  ) {
+    return new Promise<{ event: ConnectPortEvent; data: any; }>((resolve) => {
+      const uid = nanoid();
+      const handler = (args: any) => {
+        resolve(args);
+        this.off(event, handler);
+      };
+      this.on(event, handler);
+      this.emit(event, data, uid);
+    });
   }
 })();

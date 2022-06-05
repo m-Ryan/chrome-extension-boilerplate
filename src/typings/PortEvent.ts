@@ -2,8 +2,7 @@ type ConnectPortEvent =
   | 'REQUEST_PORT_INITED'
   | 'PORT_INITED'
   | 'PORT_DISCONNECT'
-  | 'REQUEST_COOKIE'
-  | 'RECEIVE_COOKIE';
+  | 'REQUEST_FEATURE';
 
 type PortEventHandler = {
   [K in ConnectPortEvent]: {};

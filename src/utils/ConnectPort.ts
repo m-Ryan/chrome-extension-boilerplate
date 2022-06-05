@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 type Handler = (event: {
   type: ConnectPortEvent;
   data: PortEventHandler[ConnectPortEvent];
+  uid?: string;
 }) => void;
 
 export abstract class ConnectPort {
@@ -28,6 +29,7 @@ export abstract class ConnectPort {
   }
 
   private callHandler = (event: Parameters<Handler>[0]) => {
+
     this.handlers[event.type]?.forEach(([fn]) => {
       fn(event);
     });
@@ -42,17 +44,23 @@ export abstract class ConnectPort {
 
   public emit(
     event: ConnectPortEvent,
-    data: PortEventHandler[ConnectPortEvent]
+    data: PortEventHandler[ConnectPortEvent],
+    uid?: string
   ) {
     if (!this.port) {
       requestAnimationFrame(() => {
         this.emit(event, data);
       });
     } else {
-      this.port.postMessage({
-        type: event,
-        data: data,
-      });
+      try {
+        this.port.postMessage({
+          uid,
+          type: event,
+          data: data,
+        });
+      } catch (error) {
+
+      }
     }
   }
 
@@ -64,17 +72,5 @@ export abstract class ConnectPort {
     );
   }
 
-  public request<T extends Record<string, any>>(
-    event: ConnectPortEvent,
-    data: T
-  ) {
-    return new Promise<{ event: ConnectPortEvent; data: any }>((resolve) => {
-      const handler = (args: any) => {
-        resolve(args);
-        this.off(event, handler);
-      };
-      this.on(event, handler);
-      this.emit(event, { ...data });
-    });
-  }
+
 }
