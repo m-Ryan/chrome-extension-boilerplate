@@ -1,7 +1,6 @@
 import BgPort from '@/utils/BgPort';
-import { services } from '@/utils/service';
 
-chrome.runtime.onInstalled.addListener(onInstalled);
+chrome.runtime.onConnect.addListener(onInstalled);
 
 async function onInstalled() {
   BgPort.init();
@@ -24,4 +23,3 @@ async function onInstalled() {
   //   console.log('error', error);
   // }
 }
-

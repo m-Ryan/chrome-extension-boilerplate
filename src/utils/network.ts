@@ -30,7 +30,6 @@ export function CreateNetwork(baseUrl = '', defaultOptions?: RequestInit) {
           ...config.headers,
         },
       }).then((res) => {
-        console.log('res', res);
         try {
           return res.json();
         } catch (error) {
