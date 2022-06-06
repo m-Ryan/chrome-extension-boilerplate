@@ -18,10 +18,11 @@
     "target": "ESNext",
     "sourceMap": true,
     "baseUrl": ".",
+    "outDir": "library",
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src/shopify"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

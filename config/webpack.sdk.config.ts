@@ -1,18 +1,14 @@
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import CopyPlugin from 'copy-webpack-plugin';
-
 import path from 'path';
 
 const cwd = process.cwd();
 
 export default {
   entry: {
-    web: path.resolve(cwd, 'src/page/web/index.ts'),
-    background: path.resolve(cwd, 'src/page/background/index.ts'),
+    shopify: path.resolve(cwd, 'src/shopify/index.ts'),
   },
   output: {
-    path: path.resolve(cwd, 'build'),
-    filename: 'static/js/[name].js',
+    path: path.resolve(cwd, 'library'),
+    filename: 'index.js',
   },
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   devtool: 'none',
@@ -67,15 +63,5 @@ export default {
     hot: false,
     inline: false,
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: 'chrome 插件脚手架',
-      inject: true,
-      chunks: ['background'],
-      filename: 'background.html',
-    }),
-    new CopyPlugin({
-      patterns: [{ from: 'public', to: '.' }],
-    }),
-  ],
+  plugins: [],
 };
