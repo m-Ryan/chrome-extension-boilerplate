@@ -1,4 +1,5 @@
 {
+  "name": "splitlime-shopify-ext",
   "scripts": {
     "start": "webpack-dev-server --config ./config/webpack.config.ts & webpack-dev-server --config ./config/webpack.sdk.config.ts",
     "build": "yarn build:ext & yarn build:sdk && yarn typings",
@@ -6,6 +7,10 @@
     "build:sdk": "rm -rf library && cross-env NODE_ENV=production webpack --config ./config/webpack.sdk.config.ts",
     "typings": "tsc --declaration --emitDeclarationOnly --project tsconfig.alias.json && tsc-alias -p tsconfig.alias.json"
   },
+  "main": "library/index.js",
+  "files": [
+    "library"
+  ],
   "types": "library/shopify/index.d.ts",
   "devDependencies": {
     "@babel/cli": "^7.10.5",
