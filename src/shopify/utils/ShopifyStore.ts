@@ -1,3 +1,5 @@
+import { isUndefined } from 'lodash';
+import { getCheckoutSetting } from './getCheckoutSetting';
 import { getCsrfToken } from './getCsrfToken';
 import { getPreviewNotificationEmail } from './getPreviewNotificationEmail';
 import { Sender } from './sender';
@@ -38,7 +40,7 @@ export class ShopifyStore {
   };
 
   async updateAbandonedCheckoutEmails(payload: { enabled: boolean }) {
-    if (!payload.enabled) {
+    if (isUndefined(payload.enabled)) {
       throw new Error('Missing enabled');
     }
     await this.initializedPromise;
@@ -124,5 +126,31 @@ export class ShopifyStore {
       url: `https://${this.shop}/admin`,
       ...this.config,
     });
+  }
+
+  async getCheckoutSetting() {
+    await this.initializedPromise;
+    if (!this.config) {
+      throw new Error('Store not logged in.');
+    }
+    return getCheckoutSetting({
+      url: `https://${this.shop}/admin`,
+      ...this.config,
+    });
+  }
+
+  async getAbandonedCheckoutEmailsEnabled() {
+    await this.initializedPromise;
+    if (!this.config) {
+      throw new Error('Store not logged in.');
+    }
+    const data = await getCheckoutSetting({
+      url: `https://${this.shop}/admin`,
+      ...this.config,
+    });
+    return (
+      data.data.data.shop.checkoutSettings.abandonedCheckoutEmails !==
+      'DISABLED'
+    );
   }
 }

@@ -1,7 +1,8 @@
 {
   "name": "splitlime-shopify-ext",
   "scripts": {
-    "start": "webpack-dev-server --config ./config/webpack.config.ts & webpack-dev-server --config ./config/webpack.sdk.config.ts",
+    "start:sdk": " webpack-dev-server --config ./config/webpack.sdk.config.ts",
+    "start": "webpack-dev-server --config ./config/webpack.config.ts & yarn start:sdk",
     "build": "yarn build:ext & yarn build:sdk && yarn typings",
     "build:ext": "rm -rf library && cross-env NODE_ENV=production webpack --config ./config/webpack.sdk.config.ts",
     "build:sdk": "rm -rf library && cross-env NODE_ENV=production webpack --config ./config/webpack.sdk.config.ts",

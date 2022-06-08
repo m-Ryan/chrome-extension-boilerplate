@@ -1,3 +1,9 @@
 export { services } from './../utils/service';
-export { ShopifyStore } from './utils/ShopifyStore';
+import { ShopifyStore } from './utils/ShopifyStore';
 export * from './constants';
+
+(window as any).SplitlimeExt = {
+  ShopifyStore: ShopifyStore,
+};
+
+export { ShopifyStore };

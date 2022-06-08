@@ -31,4 +31,5 @@ export declare class ShopifyStore {
         title: string;
         bodyHtml: string;
     }): Promise<any>;
+    getCheckoutSetting(): Promise<any>;
 }
