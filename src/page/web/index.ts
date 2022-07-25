@@ -2,7 +2,7 @@ import WebPort from '@/utils/WebPort';
 
 async function main() {
   await WebPort.init();
-  console.log('SplitlimeExt is ready!');
+  console.log('extension is ready!');
 
   const rc = new Receiver();
   rc.init();
